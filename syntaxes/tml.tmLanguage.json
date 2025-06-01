@@ -1,0 +1,157 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "TML",
+  "scopeName": "source.tml",
+  "fileTypes": ["tml"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#directives" },
+    { "include": "#transitions" },
+    { "include": "#states" },
+    { "include": "#punctuation" },
+    { "include": "#misc" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.double-slash.tml", "match": "//.*$" },
+        {
+          "name": "comment.block.tml",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "patterns": [
+            { "name": "comment.block.tml", "match": "[^*]+|\\*(?!/)" }
+          ]
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "name": "meta.directive.tml",
+          "begin": "(@states|@initial_state|@final_states)\\s*:",
+          "beginCaptures": {
+            "1": { "name": "keyword.directive.name.tml" }
+          },
+          "end": "$",
+          "patterns": [
+            { "include": "#comments" },
+            { "name": "variable.parameter.state.tml", "match": "\\b[a-zA-Z][a-zA-Z0-9]*\\b" },
+            { "name": "punctuation.separator.comma.tml", "match": "," },
+            { "name": "invalid.illegal.character.tml", "match": "\\S" }
+          ]
+        },
+        {
+          "name": "meta.directive.tml",
+          "begin": "(@tape_alphabet)\\s*:",
+          "beginCaptures": {
+            "1": { "name": "keyword.directive.name.tml" }
+          },
+          "end": "$",
+          "patterns": [
+            { "include": "#comments" },
+            { "name": "string.quoted.symbol.tml", "match": "\\b[a-zA-Z0-9]\\b" },
+            { "name": "constant.language.blank.tml", "match": "\\b_\\b" },
+            { "name": "constant.language.initial_state.tml", "match": ">" },
+            { "name": "punctuation.separator.comma.tml", "match": "," },
+            { "name": "invalid.illegal.character.tml", "match": "\\S" }
+          ]
+        },
+        {
+          "name": "meta.directive.tml",
+          "begin": "(@input_alphabet)\\s*:",
+          "beginCaptures": {
+            "1": { "name": "keyword.directive.name.tml" }
+          },
+          "end": "$",
+          "patterns": [
+            { "include": "#comments" },
+            { "name": "string.quoted.symbol.tml", "match": "\\b[a-zA-Z0-9]\\b" },
+            { "name": "punctuation.separator.comma.tml", "match": "," },
+            { "name": "invalid.illegal.character.tml", "match": "\\S" }
+          ]
+        },
+        {
+          "name": "meta.directive.tml",
+          "begin": "(@max_depth)\\s*:",
+          "beginCaptures": {
+            "1": { "name": "keyword.directive.name.tml" }
+          },
+          "end": "$",
+          "patterns": [
+            { "include": "#comments" },
+            { "name": "constant.numeric.integer.tml", "match": "\\b\\d+\\b"},
+            { "name": "punctuation.separator.comma.tml", "match": "," },
+            { "name": "invalid.illegal.character.tml", "match": "\\S" }
+          ]
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "meta.transition.tml",
+          "match": "\\((\\s*\\b[a-zA-Z][a-zA-Z0-9]*\\b\\s*),(\\s*(>|L|R|_|[a-zA-Z0-9])\\s*)\\)\\s*=\\s*\\((\\s*\\b[a-zA-Z][0-9]*\\b\\s*),(\\s*(>|L|R|_|[a-zA-Z0-9])\\s*)\\)",
+          "captures": {
+            "1": { "name": "variable.parameter.state.tml" },
+            "2": {
+              "patterns": [
+                { "name": "constant.language.left.tml", "match": "L" },
+                { "name": "constant.language.right.tml", "match": "R" },
+                { "name": "constant.language.blank.tml", "match": "\\b_\\b" },
+                { "name": "constant.language.initial_state.tml", "match": ">" },
+                { "name": "string.quoted.symbol.tml", "match": "\\b[a-zA-Z0-9]\\b" }
+              ]
+            },
+            "4": { "name": "variable.parameter.state.tml" },
+            "5": {
+              "patterns": [
+                { "name": "constant.language.left.tml", "match": "L" },
+                { "name": "constant.language.right.tml", "match": "R" },
+                { "name": "constant.language.blank.tml", "match": "\\b_\\b" },
+                { "name": "string.quoted.symbol.tml", "match": "\\b[a-zA-Z0-9]\\b" },
+                { "name": "invalid.illegal.character.tml", "match": "\\S" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.transition.tml",
+          "match": "\\((\\s*\\b[a-zA-Z][a-zA-Z0-9]*\\b\\s*),(\\s*(>|L|R|_|[a-zA-Z0-9])\\s*)\\)",
+          "captures": {
+            "1": { "name": "variable.parameter.state.tml" },
+            "2": {
+              "patterns": [
+                { "name": "constant.language.left.tml", "match": "L" },
+                { "name": "constant.language.right.tml", "match": "R" },
+                { "name": "constant.language.blank.tml", "match": "\\b_\\b" },
+                { "name": "constant.language.initial_state.tml", "match": ">" },
+                { "name": "punctuation.separator.comma.tml", "match": "," },
+                { "name": "string.quoted.symbol.tml", "match": "\\b[a-zA-Z0-9]\\b" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "states": {
+      "patterns": [
+        { "name": "variable.parameter.state.tml", "match": "\\b[a-zA-Z][a-zA-Z0-9]*\\b" }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        { "name": "punctuation.separator.comma.tml", "match": "," },
+        { "name": "punctuation.separator.colon.tml", "match": ":" },
+        { "name": "punctuation.separator.equals.tml", "match": "=" },
+        { "name": "punctuation.section.parens.begin.tml", "match": "\\(" },
+        { "name": "punctuation.section.parens.end.tml", "match": "\\)" }
+      ]
+    },
+    "misc": {
+      "patterns": [
+        { "name": "invalid.illegal.character.tml", "match": "\\S" }
+      ]
+    }
+  }
+}
